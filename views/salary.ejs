@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Favicon icon-->
+  <link rel="shortcut icon" type="image/png" href="/images/favicon.png" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <!-- Core Css -->
+  <link rel="stylesheet" href="/css/theme.css" />
+  <title>Hệ thống quản lý bể bơi - Bảng Lương</title>
+</head>
+
+<body class="bg-surface">
+  <main>
+    <div id="main-wrapper" class="flex p-5 mt-9 h-full xl:pr-0">
+                          <!-- Bảng lương -->
+                           <!-- Nhân viên -->
+								<div class="card h-full w-full">
+									<div class="card-body">
+										<h4 class="text-gray-500 text-lg font-semibold mb-5">Bảng lương chi tiết</h4>
+										<div class="relative overflow-x-auto">
+											<!-- table -->
+											<table class="text-left w-full whitespace-nowrap text-sm text-gray-500">
+												<thead>
+													<tr class="text-sm">
+														<th scope="col" class="p-4 font-semibold">#</th>
+														<th scope="col" class="p-4 font-semibold">Tháng Kê Lương</th>
+														<th scope="col" class="p-4 font-semibold">Mã Nhân Viên</th>
+														<th scope="col" class="p-4 font-semibold">Tiền Lương Cứng</th>
+														<th scope="col" class="p-4 font-semibold">Ngày Công Chuẩn</th>
+														<th scope="col" class="p-4 font-semibold">Ngày Tính Lương</th>
+														<th scope="col" class="p-4 font-semibold">Phụ Cấp</th>
+														<th scope="col" class="p-4 font-semibold">Tổng Lương</th>
+														<th scope="col" class="p-4 font-semibold">Thực Lĩnh</th>
+														<th scope="col" class="p-4 font-semibold">Trạng Thái</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr>
+														<% dataSalary.forEach((item, index) => { %>
+														<td class="p-4 text-sm">
+															<div class="flex gap-6 items-center">
+																<div class="flex flex-col gap-1 text-gray-500">
+																	<h3 class=" font-bold"><%= index + 1 %></h3>
+																</div>
+															</div>
+														</td>
+														<td class="p-4">
+															<h3 class="font-medium"><%= item.ThangKeLuong.trim() %></h3>
+														</td>
+														<td class="p-4">
+															<h3 class="font-medium text-gray-800"><%= item.idNhanVien %></h3>
+														</td>
+														<td class="p-4">
+															<h3 class="font-medium text-blue-600"><%= item.TienLuongCung.toLocaleString() %> VND</h3>
+														</td>
+														<td class="p-4">
+															<h3 class="font-medium text-red-500"><%= item.NgayCongChuan %></h3>
+														</td>
+														<td class="p-4">
+															<h3 class="font-medium text-blue-500"><%= item.NgayTinhLuong %></h3>
+														</td>
+														<td class="p-4">
+															<h3 class="font-medium text-teal-500"><%= item.PhuCap %>%</h3>
+														</td>
+														<td class="p-4">
+															<h3 class="font-medium text-teal-500"><%= item.TongLuong.toLocaleString() %> VND</h3>
+														</td>
+														<td class="p-4">
+															<h3 class="font-medium text-teal-500"><%= item.ThucLinh.toLocaleString() %> VND</h3>
+														</td>
+														<td class="p-4">
+															<span
+															class="<%= item.TrangThai === 1 ? 'inline-flex items-center py-2 px-4 rounded-3xl font-semibold bg-teal-400 text-teal-500' : 'inline-flex items-center py-2 px-4 rounded-3xl font-semibold bg-red-500 text-teal-500' %>">
+															<%= item.TrangThai === 1 ? 'Đã Thanh Toán' : 'Chưa Thanh Toán' %>
+														</span>
+													
+														</td>
+													</tr>
+													<% }); %>
+												</tbody>
+											</table>
+										</div>
+										<div class="flex justify-center gap-4 mt-6">
+											<!-- Button Xuất Excel -->
+											<form action="/dashboard/member/salary/export-salary" method="GET">
+												<button type="submit" 
+														class="py-2 px-7 inline-flex items-center gap-x-2 text-base font-medium rounded-2xl border border-transparent bg-teal-500 text-white hover:bg-teal-600">
+													Xuất Excel
+												</button>
+											</form>
+										
+											<!-- Button Trở Về -->
+											<form action="/dashboard" method="GET">
+												<button type="submit" 
+														class="py-2 px-6 btn rounded-2xl text-base font-medium  border border-transparent bg-blue-600 text-white hover:bg-blue-700">
+													Trở Về
+												</button>
+											</form>
+										</div>
+									</div>
+								</div>
+
+								
+		
+                                            <!-- Footer -->
+          
+            <!-- End Footer -->
+							<!-- End Nhân viên -->
+                          <!--  END bảng lương-->
+
+          </div>
+        </main>
+        <!-- Main Content End -->
+      </div>
+      <!--end of project-->
+  </main>
+
+  <script src="../libs/jquery/dist/jquery.min.js"></script>
+  <script src="../libs/simplebar/dist/simplebar.min.js"></script>
+  <script src="../libs/iconify-icon/dist/iconify-icon.min.js"></script>
+  <script src="../libs/@preline/dropdown/index.js"></script>
+  <script src="../libs/@preline/overlay/index.js"></script>
+  <script src="../js/sidebarmenu.js"></script>
+
+  <script src="../libs/apexcharts/dist/apexcharts.min.js"></script>
+
+</body>

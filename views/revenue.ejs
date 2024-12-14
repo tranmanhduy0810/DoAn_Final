@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Favicon icon-->
+    <link rel="shortcut icon" type="image/png" href="../images/favicon.png" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Core Css -->
+    <link rel="stylesheet" href="../css/theme.css" />
+    <title>Hệ thống quản lý bể bơi - Hoá đơn</title>
+</head>
+
+<body class="bg-surface">
+    <main>
+        <div id="main-wrapper" class="flex p-5 xl:pr-0">
+            <!-- Side Bar -->
+            <%- include("./partials-receipt/aside_bar") %>
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    const logoutBtn = document.getElementById('logoutBtn');
+                    if (logoutBtn) {
+                        logoutBtn.addEventListener('click', function (event) {
+                            event.preventDefault();
+                            Swal.fire({
+                                title: 'Bạn có chắc chắn muốn đăng xuất?',
+                                text: "Bạn sẽ bị đăng xuất khỏi hệ thống!",
+                                icon: 'warning',
+                                showCancelButton: true,
+                                confirmButtonText: 'YES',
+                                confirmButtonColor: 'LightSeaGreen',
+                                cancelButtonColor: 'Crimson',
+                                cancelButtonText: 'NO',
+                                reverseButtons: true
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    document.getElementById('logoutForm').submit();
+                                } else {
+                                    console.log('User canceled logout');
+                                }
+                            });
+                        });
+                    }
+                });
+            </script>
+            <!-- End side Bar -->
+            <div class="w-full page-wrapper xl:px-6 px-0">
+                <!-- Main Content -->
+                <main class="h-full max-w-full">
+                    <div class="container full-container p-0 flex flex-col gap-6">
+                        <!--  Header Start -->
+                        <%- include("./partials-receipt/header") %>
+                        <script>
+                            document.addEventListener('DOMContentLoaded', function () {
+                                const logoutBtn = document.getElementById('logoutNavBtn');
+                                if (logoutBtn) {
+                                    logoutBtn.addEventListener('click', function (event) {
+                                        event.preventDefault();
+                                        Swal.fire({
+                                            title: 'Bạn có chắc chắn muốn đăng xuất?',
+                                            text: "Bạn sẽ bị đăng xuất khỏi hệ thống!",
+                                            icon: 'warning',
+                                            showCancelButton: true,
+                                            confirmButtonText: 'YES',
+                                            confirmButtonColor: 'LightSeaGreen',
+                                            cancelButtonColor: 'Crimson',
+                                            cancelButtonText: 'NO',
+                                            reverseButtons: true
+                                        }).then((result) => {
+                                            if (result.isConfirmed) {
+                                                document.getElementById('logoutForm').submit();
+                                            } else {
+                                                console.log('User canceled logout');
+                                            }
+                                        });
+                                    });
+                                }
+                            });
+                        </script>
+                        <!--  Header End -->
+
+                        <!-- Bar Chart -->
+                        <%- include("./partials/reneuve_barchart") %>
+                        <!--  End Bar Chart-->
+
+                        <!-- Cirlce Invoice Chart -->
+                        <%- include("./partials/circle_invoice_chart") %>
+                        <!-- END Cirlce Invoice Chart -->
+
+                        <!--  Line Ticket Chart -->
+                        <%- include("./partials/line_ticket_chart") %>
+                        <!--  End Line Ticket Chart -->
+
+                        <!-- Footer -->
+                        <%- include("./partials/footer") %>
+                        <!-- End Footer -->
+                    </div>
+                </main>
+                <!-- Main Content End -->
+            </div>
+            <!--end of project-->
+    </main>
+
+    <script src="../libs/jquery/dist/jquery.min.js"></script>
+    <script src="../libs/simplebar/dist/simplebar.min.js"></script>
+    <script src="../libs/iconify-icon/dist/iconify-icon.min.js"></script>
+    <script src="../libs/@preline/dropdown/index.js"></script>
+    <script src="../libs/@preline/overlay/index.js"></script>
+    <script src="../js/sidebarmenu.js"></script>
+
+    <script src="../libs/apexcharts/dist/apexcharts.min.js"></script>
+
+<!-- BAR CHART -->
+<script>
+    $(function () {
+        const chartData = <%- JSON.stringify(chartData) %>;  
+
+        var profit = {
+            series: [
+                {
+                    name: "Doanh Thu (VND)",
+                    data: chartData.totalRevenues,  
+                },
+                {
+                    name: "Số lượng hóa đơn",
+                    data: chartData.orderCounts,  
+                },
+            ],
+            chart: {
+                fontFamily: "Poppins,sans-serif",
+                type: "bar",
+                height: 370,
+                offsetY: 10,
+                toolbar: {
+                    show: false,
+                },
+            },
+            grid: {
+                show: true,
+                strokeDashArray: 3,
+                borderColor: "rgba(0,0,0,.1)",
+            },
+            colors: [
+                "#0085db", 
+                "#c5e1f7",
+            ],
+            plotOptions: {
+                bar: {
+                    horizontal: false,
+                    columnWidth: "30%",
+                    endingShape: "flat",
+                },
+            },
+            dataLabels: {
+                enabled: false,
+            },
+            stroke: {
+                show: true,
+                width: 5,
+                colors: ["transparent"],
+            },
+            xaxis: {
+                type: "category",
+                categories: chartData.timePeriods,  
+                axisTicks: {
+                    show: false,
+                },
+                axisBorder: {
+                    show: false,
+                },
+                labels: {
+                    style: {
+                        colors: "#a1aab2",
+                    },
+                    formatter: function (value) {
+                        return value; 
+                    }
+                },
+            },
+            yaxis: {
+                labels: {
+                    style: {
+                        colors: "#a1aab2",
+                    },
+                    formatter: function (value) {
+                        return value.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+                    }
+                },
+            },
+            fill: {
+                opacity: 1,
+                colors: [
+                    "#0085db", 
+                    "#c5e1f7", 
+                ],
+            },
+            tooltip: {
+                theme: "dark",
+                y: {
+                    formatter: function (value) {
+                        return value.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+                    }
+                }
+            },
+            legend: {
+                show: true,
+            },
+            responsive: [
+                {
+                    breakpoint: 1024,
+                    options: {
+                        chart: {
+                            height: 350,
+                        },
+                        xaxis: {
+                            labels: {
+                                style: {
+                                    fontSize: "10px", 
+                                },
+                            },
+                        },
+                        yaxis: {
+                            labels: {
+                                style: {
+                                    fontSize: "10px", 
+                                }
+                            },
+                        },
+                    },
+                },
+                {
+                    breakpoint: 767,
+                    options: {
+                        chart: {
+                            height: 300,
+                        },
+                        xaxis: {
+                            labels: {
+                                style: {
+                                    fontSize: "8px",
+                                },
+                            },
+                        },
+                        yaxis: {
+                            labels: {
+                                style: {
+                                    fontSize: "8px", 
+                                }
+                            },
+                        },
+                        legend: {
+                            position: "bottom",
+                            fontSize: "10px",
+                        },
+                    },
+                },
+            ],
+        };
+        var chart_column_basic = new ApexCharts(
+            document.querySelector("#profit"),
+            profit
+        );
+        chart_column_basic.render();
+    });
+</script>
+<!-- End Bar Chart -->
+
+
+      <!-- Pie Chart -->
+       <script>
+    $(function () {
+        const chartPie = <%- JSON.stringify(chartPie) %>;
+
+        chartPie.colors = [
+              "#0085db", // Xanh dương
+              "#c5e1f7", // Xanh nhạt
+              "#ffe6e6", // Hồng nhạt
+              "#fb977d", // Đỏ cam
+              "#dbeafe", // Xanh dương nhạt
+              "#fef9c3", // Vàng nhạt
+              "#e0e7ff", // Xanh pastel
+              "#e6fffa", // Xanh mint
+              "#f3e5f5", // Hồng tím nhạt
+              "#ffecb3", // Vàng sáng
+              "#b3e5fc", // Xanh sáng
+              "#ffccbc", // Đỏ nhạt
+              "#c8e6c9", // Xanh lá nhạt
+              "#f8bbd0", // Hồng pastel
+              "#b2dfdb", // Xanh lá nhạt
+            ];
+
+        var grade = {
+            series: chartPie.TongDoanhThu, 
+            labels: chartPie.TenDichVu, 
+            chart: {
+                height: 300,
+                type: "donut",
+                fontFamily: "Poppins,sans-serif",
+                foreColor: "#0085db",
+            },
+            tooltip: {
+                theme: "light",
+                y: {
+                    formatter: function (value) {
+                        return value.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+                    },
+                },
+            },
+            colors: chartPie.colors, 
+            dataLabels: {
+                enabled: true,
+                formatter: function (val, opts) {
+                    const label = opts.w.globals.labels[opts.seriesIndex];
+                    return `${label}: ${val.toFixed(2)}%`;
+                },
+            },
+            legend: {
+                show: true,
+                position: "bottom",
+            },
+            stroke: {
+                show: false,
+            },
+            responsive: [
+                {
+                    breakpoint: 1476,
+                    options: {
+                        chart: {
+                            height: 180,
+                        },
+                    },
+                },
+                {
+                    breakpoint: 1280,
+                    options: {
+                        chart: {
+                            height: 220,
+                        },
+                    },
+                },
+                {
+                    breakpoint: 1024,
+                    options: {
+                        chart: {
+                            height: 250,
+                        },
+                    },
+                },
+                {
+                    breakpoint: 767,
+                    options: {
+                        chart: {
+                            height: 500,
+                        },
+                        dataLabels: {
+                            enabled: false,
+                        },
+                        legend: {
+                            position: "bottom",
+                        },
+                    },
+                },
+                {
+                    breakpoint: 480,
+                    options: {
+                        chart: {
+                            height: 300,
+                        },
+                        dataLabels: {
+                            enabled: true,
+                        },
+                    },
+                },
+            ],
+            plotOptions: {
+                pie: {
+                    donut: {
+                        size: "80%",
+                        labels: {
+                            show: true,
+                            name: {
+                                fontSize: "12px",
+                            },
+                            value: {
+                                show: false,
+                            },
+                        },
+                    },
+                },
+            },
+        };
+        var chart = new ApexCharts(document.querySelector("#grade"), grade);
+        chart.render();
+    });
+        </script>
+      <!-- End Pie Chart -->
+
+      <!-- Line Chart -->
+      <script>
+        $(function () {
+            const chartLine = <%- JSON.stringify(chartLine) %>;
+    
+            const dates = chartLine.Ngay.map(date => {
+                const d = new Date(date);
+                return `${d.getDate()}/${d.getMonth() + 1}`;
+            });
+    
+            var lineChart = {
+                series: [{
+                    name: "Doanh Thu (VND)",
+                    color: "#8763da", // Màu của đường biểu đồ
+                    data: chartLine.TongDoanhThu,
+                }],
+                chart: {
+                    id: "sparkline3",
+                    type: "area",
+                    height: 60,
+                    sparkline: {
+                      enabled: true,
+                    },
+                    group: "sparklines",
+                    toolbar: {
+                        show: false
+                    },
+                    fontFamily: "Poppins, sans-serif",
+                    foreColor: "#adb0bb",
+                },
+                xaxis: {
+                    categories: dates,
+                    title: {
+                        text: "Ngày"
+                    },
+                    labels: {
+                        style: {
+                            colors: "#a1aab2",
+                        },
+                    },
+                },
+                yaxis: {
+                    labels: {
+                        style: {
+                            colors: "#a1aab2",
+                        },
+                        formatter: function (value) {
+                            return value.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+                        }
+                    },
+                    title: {
+                        text: "Doanh Thu"
+                    }
+                },
+                stroke: {
+                    curve: "smooth",
+                    width: 2
+                },
+                fill: {
+                    colors: ["#f3feff"],
+                    type: "solid",
+                    opacity: 0.05
+                },
+                markers: {
+                    size: 0
+                },
+                tooltip: {
+                    theme: "dark",
+                    x: {
+                        format: "dd/MM"
+                    },
+                    y: {
+                        formatter: function (value) {
+                            return value.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+                        }
+                    }
+                }
+            };
+            var chart = new ApexCharts(document.querySelector("#earning"), lineChart);
+            chart.render();
+        });
+    </script>
+</body>
+
+

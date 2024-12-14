@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Favicon icon-->
+    <link rel="shortcut icon" type="image/png" href="../images/favicon.png" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Core Css -->
+    <link rel="stylesheet" href="../css/theme.css" />
+    <title>Hệ thống quản lý bể bơi - Khách Hàng</title>
+</head>
+
+<body class="bg-surface">
+    <main>
+        <div id="main-wrapper" class="flex p-5 xl:pr-0">
+            <!-- Side Bar -->
+            <%- include("./partials-receipt/aside_bar") %>
+
+            <!-- End side Bar -->
+            <div class="w-full page-wrapper xl:px-6 px-0">
+                <!-- Main Content -->
+                <main class="h-full max-w-full">
+                    <div class="container full-container p-0 flex flex-col gap-6">
+                        <!--  Header Start -->
+                        <%- include("./partials-receipt/header") %>
+
+                        <!-- Vãng Lai -->
+                        <div class="grid grid-cols-1 lg:grid-cols-3 lg:gap-x-6 gap-x-0 lg:gap-y-0 gap-y-6">
+                            <!-- Vãng Lai -->
+                            <div class="card w-auto">
+                                <div class="card-body">
+                                    <h4 class="text-gray-500 text-lg font-semibold mb-5">Vãng Lai</h4>
+                                    <ul class="timeline-widget relative">
+                                        <% dataVangLai.TGcheckin.forEach(function(time, index) { %>
+                                        <li class="timeline-item flex relative overflow-hidden min-h-[70px]">
+                                            <div
+                                                class="timeline-time text-gray-500 text-sm min-w-[90px] py-[6px] pr-4 text-end">
+                                                <%= moment(time).format('DD/MM/YYYY hh:mm') %>
+                                            </div>
+                                            <div class="timeline-badge-wrap flex flex-col items-center">
+                                                <div
+                                                    class="timeline-badge w-3 h-3 rounded-full shrink-0 bg-transparent border-2 border-red-500 my-[10px]">
+                                                </div>
+                                                <div class="timeline-badge-border block h-full w-[1px] bg-gray-100">
+                                                </div>
+                                            </div>
+                                            <div class="timeline-desc py-[6px] px-4">
+                                                <p class="text-gray-500 text-sm font-normal">Mã khách hàng:
+                                                    <%= dataVangLai.idKhachHang[index] %></p>
+                                                <a href="javascript:void('')" class="text-blue-600">#Mã Dịch Vụ:
+                                                    <%= dataVangLai.idDV[index] %></a>
+                                            </div>
+
+                                        </li>
+                                        <% }); %>
+                                    </ul>
+                                    <!-- Pagination for Vãng Lai -->
+                                    <div class="flex justify-center mt-4 gap-4">
+                                        <!-- Left Arrow (Previous) -->
+                                        <% if (currentPage > 1) { %>
+                                        <a class="mt-3 inline-flex items-center gap-x-1 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-700"
+                                            href="?page=<%= currentPage - 1 %>&pageSize=<%= pageSize %>">
+                                            <i class="ti ti-chevron-left text-base"></i>
+                                            Trước
+                                        </a>
+                                        <% } else { %>
+                                        <span
+                                            class="mt-3 inline-flex items-center gap-x-1 text-sm font-semibold text-gray-400 pointer-events-none">
+                                            <i class="ti ti-chevron-left text-base"></i>
+                                            Trước
+                                        </span>
+                                        <% } %>
+                                        <!-- Right Arrow (Next) -->
+                                        <% if (dataVangLai.TGcheckin.length === pageSize) { %>
+                                        <a class="mt-3 inline-flex items-center gap-x-1 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-700"
+                                            href="?page=<%= currentPage + 1 %>&pageSize=<%= pageSize %>">
+                                            Sau
+                                            <i class="ti ti-chevron-right text-base"></i>
+                                        </a>
+                                        <% } else { %>
+                                        <span
+                                            class="mt-3 inline-flex items-center gap-x-1 text-sm font-semibold text-gray-400 pointer-events-none">
+                                            Sau
+                                            <i class="ti ti-chevron-right text-base"></i>
+                                        </span>
+                                        <% } %>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- END VÃNG LAI -->
+
+                            <!-- Hội Viên -->
+                            <div class="col-span-2">
+                                <div class="card h-full">
+                                    <div class="card-body">
+                                        <h4 class="text-gray-500 text-lg font-semibold mb-5">Hội Viên</h4>
+                                        <div class="relative overflow-x-auto">
+                                            <table class="text-left w-full whitespace-nowrap text-sm text-gray-500">
+                                                <thead>
+                                                    <tr class="text-sm">
+                                                        <th scope="col" class="p-4 font-semibold">Mã KH</th>
+                                                        <th scope="col" class="p-4 font-semibold">Tên KH</th>
+                                                        <th scope="col" class="p-4 font-semibold">Ngày sinh</th>
+                                                        <th scope="col" class="p-4 font-semibold">Giới tính</th>
+                                                        <th scope="col" class="p-4 font-semibold">Địa chỉ</th>
+                                                        <th scope="col" class="p-4 font-semibold">SDT</th>
+                                                        <th scope="col" class="p-4 font-semibold">CCCD</th>
+                                                        <th scope="col" class="p-4 font-semibold">Ngày đăng ký</th>
+                                                        <th scope="col" class="p-4 font-semibold">Mã nhóm DV</th>
+                                                        <th scope="col" class="p-4 font-semibold">ID thẻ</th>
+                                                        <th scope="col" class="p-4 font-semibold">Mã thẻ</th>
+                                                        <th scope="col" class="p-4 font-semibold">Mã dịch vụ</th>
+                                                        <th scope="col" class="p-4 font-semibold">Trạng thái</th>
+                                                        <th scope="col" class="p-4 font-semibold">Thời gian vào</th>
+                                                        <th scope="col" class="p-4 font-semibold">Chức năng</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <% dataHoiVien.TenKH.forEach(function(name, index) { %>
+                                                    <tr>
+                                                        <td class="p-4">
+                                                            <h3 class="font-medium text-black">
+                                                                <%= dataHoiVien.idKhachHang[index] %></h3>
+                                                        </td>
+                                                        <td class="p-4">
+                                                            <h3 class="font-medium text-blue-600"><%= name %></h3>
+                                                        </td>
+                                                        <td class="p-4">
+                                                            <h3 class="font-mono text-red-500">
+                                                                <%= dataHoiVien.NgaySinh[index] ? moment(dataHoiVien.NgaySinh[index]).format('DD/MM/YYYY') : 'Not provided' %>
+                                                            </h3>
+                                                        </td>
+                                                        <td class="p-4">
+                                                            <h3 class="font-medium">
+                                                                <%= dataHoiVien.GioiTinh[index] == 0 ? 'Nữ' : 'Nam' %>
+                                                            </h3>
+                                                        </td>
+                                                        <td class="p-4">
+                                                            <h3 class="font-medium"><%= dataHoiVien.DiaChi[index] %>
+                                                            </h3>
+                                                        </td>
+                                                        <td class="p-4">
+                                                            <h3 class="font-medium"><%= dataHoiVien.SDT[index] %></h3>
+                                                        </td>
+                                                        <td class="p-4">
+                                                            <h3 class="font-medium"><%= dataHoiVien.CCCD[index] %></h3>
+                                                        </td>
+                                                        <td class="p-4">
+                                                            <h3 class="font-medium">
+                                                                <%= dataHoiVien.NgayDK[index] ? moment(dataHoiVien.NgayDK[index]).format('DD/MM/YYYY') : 'Chưa có' %>
+                                                            </h3>
+                                                        </td>
+                                                        <td class="p-4">
+                                                            <h3 class="font-medium"><%= dataHoiVien.idNhomDV[index] %>
+                                                            </h3>
+                                                        </td>
+                                                        <td class="p-4">
+                                                            <h3 class="font-medium">
+                                                                <%= dataHoiVien.idThe[index] ? dataHoiVien.idThe[index] : 'Chưa có' %>
+                                                            </h3>
+                                                        </td>
+                                                        <td class="p-4">
+                                                            <h3 class="font-medium">
+                                                                <%= dataHoiVien.MaThe[index] ? dataHoiVien.MaThe[index] : 'Chưa có' %>
+                                                            </h3>
+                                                        </td>
+                                                        <td class="p-4">
+                                                            <h3 class="font-medium"><%= dataHoiVien.idDV[index] %></h3>
+                                                        </td>
+                                                        <td class="p-4">
+                                                            <span class="inline-flex items-center py-2 px-4 rounded-3xl font-semibold 
+                                                                <%= dataHoiVien.TrangThai[index] == 1 ? 'bg-teal-500 text-teal-500' : 
+                                                                    dataHoiVien.TrangThai[index] == 2 ? 'bg-blue-500 text-blue-500' : 
+                                                                    'bg-red-500 text-red-500' %>">
+                                                                <%= dataHoiVien.TrangThai[index] == 1 ? 'Hoạt động' : 
+                                                                    dataHoiVien.TrangThai[index] == 2 ? 'Thẻ khoá' : 
+                                                                    'Không hoạt động' %>
+                                                            </span>
+                                                        </td>                                                        
+                                                        <td class="p-4">
+                                                            <h3 class="font-medium">
+                                                                <%= dataHoiVien.TGcheckin[index] ? moment(dataHoiVien.TGcheckin[index]).format('DD/MM/YYYY HH:mm') : 'Chưa có' %>
+                                                            </h3>
+                                                        </td>
+                                                        <td class="p-4">
+                                                            <div class="flex gap-2">
+                                                                <a class="mt-3 inline-flex items-center gap-x-1 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-700"
+                                                                href="/dashboard/customer/lock/<%= dataHoiVien.idKhachHang[index] %>">
+                                                                 Khoá thẻ
+                                                             </a>
+
+                                                                <!-- Form Xóa với phương thức POST -->
+                                                                <form action="/dashboard/customer/delete" method="POST"
+                                                                    class="inline-block">
+                                                                    <input type="hidden" name="id"
+                                                                        value="<%= dataHoiVien.idKhachHang[index] %>">
+                                                                    <button type="submit"
+                                                                        class="mt-3 inline-flex items-center gap-x-1 text-sm font-semibold rounded-lg border border-transparent text-red-500 hover:text-gray-500">
+                                                                        Xoá
+                                                                    </button>
+                                                                </form>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <% }); %>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <!-- Pagination for Hội Viên -->
+                                        <div class="flex justify-center mt-4 gap-4">
+                                            <!-- Left Arrow (Previous) -->
+                                            <% if (currentPage > 1) { %>
+                                            <a class="mt-3 inline-flex items-center gap-x-1 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-700"
+                                                href="?page=<%= currentPage - 1 %>&pageSize=<%= pageSize %>">
+                                                <i class="ti ti-chevron-left text-base"></i>
+                                                Trước
+                                            </a>
+                                            <% } else { %>
+                                            <span
+                                                class="mt-3 inline-flex items-center gap-x-1 text-sm font-semibold text-gray-400 pointer-events-none">
+                                                <i class="ti ti-chevron-left text-base"></i>
+                                                Trước
+                                            </span>
+                                            <% } %>
+                                            <!-- Right Arrow (Next) -->
+                                            <% if (dataHoiVien.TenKH.length === pageSize) { %>
+                                            <a class="mt-3 inline-flex items-center gap-x-1 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-700"
+                                                href="?page=<%= currentPage + 1 %>&pageSize=<%= pageSize %>">
+                                                Sau
+                                                <i class="ti ti-chevron-right text-base"></i>
+                                            </a>
+                                            <% } else { %>
+                                            <span
+                                                class="mt-3 inline-flex items-center gap-x-1 text-sm font-semibold text-gray-400 pointer-events-none">
+                                                Sau
+                                                <i class="ti ti-chevron-right text-base"></i>
+                                            </span>
+                                            <% } %>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End HỘI VIÊN -->
+
+
+                        </div>
+                        <!-- Footer -->
+                        <%- include("./partials/footer") %>
+                        <!-- End Footer -->
+                </main>
+                <!-- Main Content End -->
+            </div>
+            <!--end of project-->
+    </main>
+
+    <script src="../libs/jquery/dist/jquery.min.js"></script>
+    <script src="../libs/iconify-icon/dist/iconify-icon.min.js"></script>
+    <script src="../libs/@preline/dropdown/index.js"></script>
+    <script src="../libs/@preline/overlay/index.js"></script>
+    <script src="../js/sidebarmenu.js"></script>
+
+</body>

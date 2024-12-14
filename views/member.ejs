@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Favicon icon-->
+  <link rel="shortcut icon" type="image/png" href="../images/favicon.png" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <!-- Core Css -->
+  <link rel="stylesheet" href="../css/theme.css" />
+  <title>Hệ thống quản lý bể bơi - Nhân Viên</title>
+</head>
+
+<body class="bg-surface">
+  <main>
+    <div id="main-wrapper" class="flex p-5 xl:pr-0">
+      <!-- Side Bar -->
+      <%- include("./partials-receipt/aside_bar") %>
+      <script>
+        document.addEventListener('DOMContentLoaded', function () {
+          const logoutBtn = document.getElementById('logoutBtn');
+          if (logoutBtn) {
+            logoutBtn.addEventListener('click', function (event) {
+              event.preventDefault();
+              Swal.fire({
+                title: 'Bạn có chắc chắn muốn đăng xuất?',
+                text: "Bạn sẽ bị đăng xuất khỏi hệ thống!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'YES',
+                confirmButtonColor: 'LightSeaGreen',
+                cancelButtonColor: 'Crimson',
+                cancelButtonText: 'NO',
+                reverseButtons: true
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  document.getElementById('logoutForm').submit();
+                } else {
+                  console.log('User canceled logout');
+                }
+              });
+            });
+          }
+        });
+      </script>
+      <!-- End side Bar -->
+      <div class="w-full page-wrapper xl:px-6 px-0">
+        <!-- Main Content -->
+        <main class="h-full max-w-full">
+          <div class="container full-container p-0 flex flex-col gap-6">
+            <!--  Header Start -->
+            <%- include("./partials-receipt/header") %>
+            <script>
+              document.addEventListener('DOMContentLoaded', function () {
+                const logoutBtn = document.getElementById('logoutNavBtn');
+                if (logoutBtn) {
+                  logoutBtn.addEventListener('click', function (event) {
+                    event.preventDefault();
+                    Swal.fire({
+                      title: 'Bạn có chắc chắn muốn đăng xuất?',
+                      text: "Bạn sẽ bị đăng xuất khỏi hệ thống!",
+                      icon: 'warning',
+                      showCancelButton: true,
+                      confirmButtonText: 'YES',
+                      confirmButtonColor: 'LightSeaGreen',
+                      cancelButtonColor: 'Crimson',
+                      cancelButtonText: 'NO',
+                      reverseButtons: true
+                    }).then((result) => {
+                      if (result.isConfirmed) {
+                        document.getElementById('logoutForm').submit();
+                      } else {
+                        console.log('User canceled logout');
+                      }
+                    });
+                  });
+                }
+              });
+            </script>
+            <!--  Header End -->
+              <!-- Bảng Công -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 lg:gap-x-6 gap-x-0 lg:gap-y-0 gap-y-6">
+              <div class="card">
+                  <div class="card-body">
+                      <h4 class="text-gray-500 text-lg font-semibold mb-5">Bảng công</h4>
+                      <ul class="timeline-widget relative">
+                          <% dataWorking.TenNhanVien.forEach((name, i) => { %>
+                          <li class="timeline-item flex relative overflow-hidden min-h-[70px]">
+                              <div class="timeline-time text-gray-500 text-sm min-w-[90px] py-[6px] pr-4 text-end">
+                                <%= new Date(dataWorking.Thang[i]).toISOString().slice(0, 7) %>
+                              </div>
+                              <div class="timeline-badge-wrap flex flex-col items-center">
+                                  <div class="timeline-badge w-3 h-3 rounded-full shrink-0 bg-transparent border-2 border-blue-600 my-[10px]">
+                                  </div>
+                                  <div class="timeline-badge-border block h-full w-[1px] bg-gray-100"></div>
+                              </div>
+                              <div class="timeline-desc py-[6px] px-4 text-sm">
+                                  <p class="text-gray-500 font-semibold"><%= name %></p>
+                                  <p class="text-gray-500 font-medium">Ngày công chuẩn: <%= dataWorking.NgayCongChuan[i] %></p>
+                                  <a href="javascript:void(0)" class="text-blue-600">#Số ngày làm: <%= dataWorking.NgayDiLam[i] %></a>
+                                  <br>
+                                  <a href="javascript:void(0)" class="text-red-800">#Số ngày nghỉ: <%= dataWorking.NgayNghi[i] %></a>
+                                  <br>
+												          <a href="javascript:void('')" class="<%= dataWorking.TrangThai[i] === 2 ? 'text-blue-600' : 'text-red-800' %>">
+                                    Trạng thái: <%= dataWorking.TrangThai[i] === 2 ? 'Đã nộp' : 'Chưa nộp' %>
+                                </a>
+                              </div>
+                          </li>
+                          <% }); %>
+                      </ul>
+                      <div class="flex justify-end mt-4">
+                        <form action="/dashboard/member/salary" method="POST">
+                        <button type= "submit" class="btn text-base py-2 px-6 text-white font-medium bg-blue-600 rounded-md hover:bg-blue-700 transition">
+                            Tính lương
+                        </button>
+                      </form>
+                    </div>
+                  </div>
+              </div>        
+              <!-- END Bảng Công -->
+
+              <!-- Nhân viên -->
+            <div class="col-span-2">
+              <div class="card h-full">
+                <div class="card-body">
+                  <h4 class="text-gray-500 text-lg font-semibold mb-5">Danh sách nhân viên</h4>
+                  <div class="relative overflow-x-auto">
+                    <!-- table -->
+                    <table class="text-left w-full whitespace-nowrap text-sm text-gray-500">
+                      <thead>
+                        <tr class="text-sm">
+                          <th scope="col" class="p-4 font-semibold">Thông tin</th>
+                          <th scope="col" class="p-4 font-semibold">Mã nhân viên</th>
+                          <th scope="col" class="p-4 font-semibold">Ngày sinh</th>
+                          <th scope="col" class="p-4 font-semibold">Mã CCCD</th>
+                          <th scope="col" class="p-4 font-semibold">Giới tính</th>
+                          <th scope="col" class="p-4 font-semibold">Địa chỉ</th>
+                          <th scope="col" class="p-4 font-semibold">Số Điện Thoại</th>
+                          <th scope="col" class="p-4 font-semibold">Gmail</th>
+                          <th scope="col" class="p-4 font-semibold">Trạng thái</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <% for (let i = 0; i < dataMember.idNhanVien.length; i++) { %>
+                          <tr>
+                            <!-- Thông tin -->
+                            <td class="p-4 text-sm">
+                              <div class="flex gap-6 items-center">
+                                <div class="h-12 w-12 inline-block">
+                                  <img src="../images/profile/user-<%= (i % totalImages) + 1 %>.jpg" alt="" class="rounded-full w-100">
+                                </div>
+                                <div class="flex flex-col gap-1 text-gray-500">
+                                  <h3 class="font-bold"><%= dataMember.TenNhanVien[i] %></h3>
+                                  <span class="font-normal">Nhân viên</span>
+                                </div>
+                              </div>
+                            </td>
+            
+                            <!-- Mã nhân viên -->
+                            <td class="p-4"><%= dataMember.idNhanVien[i] %></td>
+            
+                            <!-- Ngày sinh -->
+                            <td class="p-4"><%= new Date(dataMember.NgaySinh[i]).toLocaleDateString() %></td>
+            
+                            <!-- Mã CCCD -->
+                            <td class="p-4"><%= dataMember.idCCCD[i] %></td>
+            
+                            <!-- Giới tính -->
+                            <td class="p-4"><%= dataMember.GioiTinh[i] === 'M' ? 'Nữ' : 'Nam' %></td>
+            
+                            <!-- Địa chỉ -->
+                            <td class="p-4"><%= dataMember.DiaChi[i] %></td>
+            
+                            <!-- Số điện thoại -->
+                            <td class="p-4"><%= dataMember.SoDienThoai[i] %></td>
+            
+                            <!-- Gmail -->
+                            <td class="p-4"><%= dataMember.Gmail[i] %></td>
+            
+                            <!-- Trạng thái -->
+                            <td class="p-6">
+                              <span
+                                class="inline-flex items-center py-2 px-4 rounded-3xl font-semibold 
+                                <%= dataMember.TrangThai[i] === 1 ? 'bg-teal-400 text-teal-500' : 'bg-red-400 text-red-500' %>">
+                                <%= dataMember.TrangThai[i] === 1 ? 'Hoạt động' : 'Không hoạt động' %>
+                              </span>
+                            </td>
+                          </tr>
+                        <% } %>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+              <!-- END Nhân viên -->
+
+              
+            <!-- Footer -->
+            <%- include("./partials/footer") %>
+            <!-- End Footer -->
+          </div>
+        </main>
+        <!-- Main Content End -->
+      </div>
+      <!--end of project-->
+  </main>
+
+  <script src="../libs/jquery/dist/jquery.min.js"></script>
+  <script src="../libs/simplebar/dist/simplebar.min.js"></script>
+  <script src="../libs/iconify-icon/dist/iconify-icon.min.js"></script>
+  <script src="../libs/@preline/dropdown/index.js"></script>
+  <script src="../libs/@preline/overlay/index.js"></script>
+  <script src="../js/sidebarmenu.js"></script>
+
+  <script src="../libs/apexcharts/dist/apexcharts.min.js"></script>
+
+</body>
